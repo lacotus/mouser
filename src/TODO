@@ -1,0 +1,16 @@
+==========
+== TODO ==
+==========
+
+E. Split 'up', 'down', 'left', 'right', 'speed boost' and 'slow speed' into their own variables to make them custom
+
+F. 
+
+===============
+== Completed ==
+===============
+A. Get keyboard input from C++ code - done
+B. Initalize git account in konsole - donee
+C. Create git repo - done
+D. Start writing code to recognize input - done
+ 
