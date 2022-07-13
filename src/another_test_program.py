@@ -2,9 +2,7 @@
 
 import getpass
 import subprocess
-import mouse
-import keyboard
-import pynput
+from pynput.keyboard import keyboard
 
 up = 'e'
 down = 'd'
@@ -46,13 +44,13 @@ def mouse_up():
 
 while True:
 
-    
+
     distance = 10
     duration = 0.0000002
 
     # First 'if', triggered when key is pressed
     if (keyboard.read_key()):
-       
+
         # Second 'if', reads what is being pressed
 
         # Organized into two sections: Multis (with subsections: e, s, and d) and Singles
@@ -99,7 +97,7 @@ while True:
             print("You are pressing right and down")
             mouse.move(distance, distance, absolute=False, duration=duration)
             continue
-        
+
         # Section 3 - Singles
         elif (keyboard.is_pressed(up)):
             print("You are pressing up")
