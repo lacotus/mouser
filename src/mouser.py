@@ -4,7 +4,7 @@ import getpass
 import subprocess
 import mouse
 import keyboard
-import pynput
+from pynput import keyboard as kb
 
 up = 'e'
 down = 'd'
