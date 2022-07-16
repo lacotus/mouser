@@ -4,6 +4,9 @@ from pynput import keyboard
 import mouse
 import subprocess
 
+from tkinter import messagebox
+messagebox.showinfo('title', 'displayed message')
+
 active_keys = ['', '']
 
 up = 'e'
