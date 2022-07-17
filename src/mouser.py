@@ -1,10 +1,10 @@
-#!/usr/bin/env python3
+#!/user/bin/env python3
 
-import getpass
-import subprocess
+from pynput import keyboard
 import mouse
-import keyboard
-from pynput import keyboard as kb
+import subprocess
+
+active_keys = ['', '']
 
 up = 'e'
 down = 'd'
@@ -23,129 +23,128 @@ scroll_down = 'n'
 
 stop_key = ';'
 
-password_passed = False
+distance = 20
+duration = 0.035
+
+def move_mouse():
+    if active_keys == [up, '']:
+        x = 0
+        y = -1
+
+    elif active_keys == [down, '']:
+        x = 0
+        y = 1
+
+    elif active_keys == ['', left]:
+        x = -1
+        y = 0
+
+    elif active_keys == ['', right]:
+        x = 1
+        y = 0
+
+    elif active_keys == [up, left]:
+        x = -1
+        y = -1
+
+    elif active_keys == [up, right]:
+        x = 1
+        y = -1
+
+    elif active_keys == [down, left]:
+        x = -1
+        y = 1
+
+    elif active_keys == [down, right]:
+        x = 1
+        y = 1
+       
+    
+
+    mouse.move((distance * x), (distance * y), absolute=False, duration=duration)
+        
+
+def set_active_keys(key): 
+    if (key.char == up):
+        active_keys[0] = up
+
+    elif (key.char == down):
+        active_keys[0] = down
+
+    elif (key.char == left):
+        active_keys[1] = left
+
+    elif (key.char == right):
+        active_keys[1] = right
+    
+def remove_active_keys(key): 
+    if (key.char == up):
+        active_keys[0] = ''
+
+    elif (key.char == down):
+        active_keys[0] = ''
+
+    elif (key.char == left):
+        active_keys[1] = ''
+
+    elif (key.char == right):
+        active_keys[1] = ''
+
+    elif (key.char == stop_key):
+        exit()
+
+def handle_click(key):
+    if key.char == click_left:
+        subprocess.call(["xdotool", "click", "1"])
+    
+    elif key.char == click_middle:
+        subprocess.call(["xdotool", "click", "2"])
+
+    elif key.char == click_right:
+        subprocess.call(["xdotool", "click", "3"])
+
+    elif key.char == scroll_up:
+        subprocess.call(["xdotool", "click", "4"])
+
+    elif key.char == scroll_down:
+        subprocess.call(["xdotool", "click", "5"])
 
 def on_press(key):
-    print(key + "was pressed")
-
-def get_password():
-    sudo_password = getpass.getpass(prompt='sudo password: ')
-    p = subprocess.Popen(['sudo', '-S', 'ls'], stderr=subprocess.PIPE, stdout=subprocess.PIPE, stdin=subprocess.PIPE)
-
     try:
-        out, err = p.communicate(input=(sudo_password+'\n').encode(),timeout=5)
+        # To console
+        print('alpha key {0} pressed'.format(key.char))
 
-    except subprocess.TimeoutExpired:
-        p.kill()
+        # Set active_keys
+        set_active_keys(key)
 
-    return sudo_password
+        # Move the mouse
+        if active_keys != ['', '']:
+            move_mouse()
 
-def mouse_up():
-    mouse.move(0, -distance, absolute=False, duration=duration)
+        # Handle all clicking / non-moving keys
+        handle_click(key)
+
+        print("Active keys: " + ' '.join(active_keys))
+    except Exception as e:
+        print('special key {0} pressed'.format(key))
+        print(e)
+
+def on_release(key):
+    print('{0} released'.format(key))
+    try:
+        # Removes the keys from active_keys as they are being released
+        remove_active_keys(key)
+
+        print("Active keys: " + ' '.join(active_keys))
+    except Exception as e:
+        print(e)
 
 
-while True:
 
-    
-    distance = 10
-    duration = 0.0000002
+with keyboard.Listener(
+        on_press=on_press,
+        on_release=on_release,
+        suppress=True) as listener:
+    listener.join()
 
-    # First 'if', triggered when key is pressed
-    if (keyboard.read_key()):
-       
-        # Second 'if', reads what is being pressed
 
-        # Organized into two sections: Multis (with subsections: e, s, and d) and Singles
-        # Multis define more than one key press, Singles define singles
-
-        # Section 1 - Speed control
-        if (keyboard.is_pressed(speed_turbo)):
-            print("speed_turbo was pressed")
-            distance = 25
-        elif (keyboard.is_pressed(speed_slow)):
-            print("speed_slow was pressed")
-            distance = 5
-
-        # Section 2 - Multis
-        # Subsection 1.1 - 'e', defines 'es (se)', 'ed (de)', and 'ef (fe)' relationships
-        if (keyboard.is_pressed(up) and keyboard.is_pressed(left)):
-            print("You are pressing up and left")
-            mouse.move(-distance, -distance, absolute=False, duration=duration)
-            continue
-
-        elif (keyboard.is_pressed(up) and keyboard.is_pressed(down)):
-            print("You are pressing up and down")
-            mouse.move(0, 0, absolute=False, duration=duration)
-            continue
-
-        elif (keyboard.is_pressed(up) and keyboard.is_pressed(right)):
-            print("You are pressing up and right")
-            mouse.move(distance, -distance, absolute=False, duration=duration)
-            continue
-
-        # Subsection 1.2 - 's', defines 'sd (ds)' and 'sf (fs)' relationships
-        elif (keyboard.is_pressed(left) and keyboard.is_pressed(down)):
-            print("You are pressing left and down")
-            mouse.move(-distance, distance, absolute=False, duration=duration)
-            continue
-
-        elif (keyboard.is_pressed(left) and keyboard.is_pressed(right)):
-            print("You are pressing left and right")
-            mouse.move(0, 0, absolute=False, duration=duration)
-            continue
-
-        # Subsection 1.3 - 'd', defines 'df (fd)' relationship
-        elif (keyboard.is_pressed(down) and keyboard.is_pressed(right)):
-            print("You are pressing right and down")
-            mouse.move(distance, distance, absolute=False, duration=duration)
-            continue
-        
-        # Section 3 - Singles
-        elif (keyboard.is_pressed(up)):
-            print("You are pressing up")
-            mouse_up()
-            continue
-
-        elif (keyboard.is_pressed(left)):
-            print("You are pressing left")
-            mouse.move(-distance, 0, absolute=False, duration=duration)
-            continue
-
-        elif (keyboard.is_pressed(down)):
-            print("You are pressing down")
-            mouse.move(0, distance, absolute=False, duration=duration)
-            continue
-
-        elif (keyboard.is_pressed(right)):
-            print("You are pressing right")
-            mouse.move(distance, 0, absolute=False, duration=duration)
-            continue
-
-        # xdotool keys -> 1 - Left click, 2 - Middle click, 3 - Right click, 4 - Scroll up, 5 - Scroll down
-        elif (keyboard.is_pressed('j')):
-            print("You are pressing 'j'")
-            subprocess.call(["xdotool", "click", "1"])
-            continue
-
-        elif (keyboard.is_pressed('k')):
-            print("You are pressing 'k'")
-            subprocess.call(["xdotool", "click", "2"])
-            continue
-
-        elif (keyboard.is_pressed('l')):
-            print("You are pressing 'l'")
-            subprocess.call(["xdotool", "click", "3"])
-            continue
-
-        elif (keyboard.is_pressed('u')):
-            print("You are pressing 'u'")
-            subprocess.call(["xdotool", "click", "4"])
-            continue
-
-        elif (keyboard.is_pressed('n')):
-            print("You are pressing 'n'")
-            subprocess.call(["xdotool", "click", "5"])
-            continue
-
-        elif (keyboard.is_pressed(';')):
-            break
