@@ -2,7 +2,15 @@
 == TODO ==
 ==========
 
-E. Split 'up', 'down', 'left', 'right', 'speed boost' and 'slow speed' into their own variables to make them custom
+F. Add processor for changing mouse.move to mouse.drag when needed
+
+J. Set animation duration to 0 for movement keys that are being held
+
+K. Set cursor speeds
+
+L. BUG: Direction sometimes takes a while to recognize left / directions
+
+M. Move move_mouse threading out of the on_press function
 
 ===============
 == Completed ==
@@ -15,4 +23,9 @@ H. Click functionality (middle) - done
 G. Click functionality (right) - done
 I. Click functionality (scroll up) - done
 J. Click functionality (scroll down) - done 
+E. Split 'up', 'down', 'left', 'right', 'speed boost' and 'slow speed' into their own variables to make them custom - done
+H. Seperate controls into their own array - done
+I. Combine set_active_keys and remove_active_keys into their own function, manage_active_keys - done
+Fa. Write manage_active_controls function - done
+G. Add threading - link: https://realpython.com/intro-to-python-threading/ - done
 
