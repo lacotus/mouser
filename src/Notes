@@ -1,0 +1,28 @@
+							===========
+							== Notes ==
+							===========
+1. The control array:
+	a. control[0]  = up
+	b. control[1]  = down
+	c. control[2]  = left
+	d. control[3]  = right
+	e. control[4]  = speed_turbo
+	f. control[5]  = speed_slow
+	g. control[6]  = click_left
+	h. control[7]  = click_middle
+	i. control[8]  = click_right
+	j. control[9]  = scroll_up
+	k. control[10] = scroll_down
+	l. control[11] =  stop_key
+
+2. Program map (7-24-22):
+	a. Define global variable - 
+	b. move_mouse() - 
+	c. handle_click() - 
+	d. manage_press() - 
+	e. manage_release() - 
+	f. on_press() - 
+	g. on_release() - 
+	h. Starts threading - 
+	i. Starts keyboard listener - 
+
