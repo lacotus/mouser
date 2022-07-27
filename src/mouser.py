@@ -10,7 +10,7 @@ import threading
 # -=- A -=-
 no_key_pressed = True
 
-movement_keys = ['', ''] # spot 0 represents up/down while spot 1 represents left / right. captures movement.
+movement_keys = [0, 0, 0, 0] # spot 0 represents up/down while spot 1 represents left / right. captures movement.
 active_key = '' # for reading which control is active (probably used mostly for click_left and dragging)
 speed_key = '' # for reading if speed is set to slow or turbo
 # controls: 0 - up, 1 - down, 2 - left, 3 - right, 4 - speed_turbo, 5 - speed_slow, 6 - click_left, 7 - click_middle,
@@ -41,39 +41,47 @@ duration = 0.035
 # -=- B -=-
 def move_mouse():
     while True:
-        if movement_keys == [up, '']:
+        if movement_keys[0] == 1:
             x = 0
             y = -1
 
-        elif movement_keys == [down, '']:
+        elif movement_keys[0] == 1 and movement_keys[1] == 1:
+            x = 0
+            y = 0
+
+        elif movement_keys[0] == 1 and movement_keys[2] == 1:
+            x = -1
+            y = -1
+
+        elif movement_keys[0] == 1 and movement_keys[3] == 1:
+            x = 1
+            y = -1
+
+        elif movement_keys[1] == 1:
             x = 0
             y = 1
 
-        elif movement_keys == ['', left]:
-            x = -1
-            y = 0
-
-        elif movement_keys == ['', right]:
-            x = 1
-            y = 0
-
-        elif movement_keys == [up, left]:
-            x = -1
-            y = -1
-
-        elif movement_keys == [up, right]:
-            x = 1
-            y = -1
-
-        elif movement_keys == [down, left]:
+        elif movement_keys[1] == 1 and movement_keys[2] == 1:
             x = -1
             y = 1
 
-        elif movement_keys == [down, right]:
+        elif movement_keys[1] == 1 and movement_keys[3] == 1:
             x = 1
             y = 1
 
-        elif movement_keys == ['', '']:
+        elif movement_keys[2] == 1:
+            x = -1
+            y = 0
+
+        elif movement_keys[2] == 1 and movement_keys[3] == 1:
+            x = 0
+            y = 0
+
+        elif movement_keys[3] == 1:
+            x = 1
+            y = 0
+
+        else:
             x = 0
             y = 0
         
@@ -111,16 +119,16 @@ def manage_press(key):
             
             # Movement keys, sets value based on what is read
             if key.char == up:
-                movement_keys[0] = up
+                movement_keys[0] = 1
         
             elif key.char == down:
-                movement_keys[0] = down
+                movement_keys[1] = 1
 
             elif key.char == left:
-                movement_keys[1] = left
+                movement_keys[2] = 1
 
             elif key.char == right:
-                movement_keys[1] = right
+                movement_keys[3] = 1
             else:
                 print('Invalid character when adding to movement_keys')
                 exit()
@@ -161,16 +169,16 @@ def manage_release(key):
             
             # Movement keys, sets value based on what is read
             if key.char == up:
-                movement_keys[0] = ''
+                movement_keys[0] = 0
         
             elif key.char == down:
-                movement_keys[0] = ''
+                movement_keys[1] = 0
 
             elif key.char == left:
-                movement_keys[1] = ''
+                movement_keys[2] = 0
 
             elif key.char == right:
-                movement_keys[1] = ''
+                movement_keys[3] = 0
             else:
                 print('Invalid character when adding to movement_keys')
                 exit()

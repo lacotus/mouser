@@ -26,3 +26,15 @@
 	h. Starts threading - 
 	i. Starts keyboard listener - 
 
+3. movement_keys press combos:
+	a. up [0]
+	b. up [0] / down [1]
+	c. up [0] / left [2]
+	d. up [0] / right [3]
+	e. down [1]
+	f. down [1] / left [2]
+	g. down [1] / right [3]
+	h. left [2]
+	i. left [2] / right [3]
+	k. right [3]
+
