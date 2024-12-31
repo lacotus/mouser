@@ -2,7 +2,7 @@
 #include <stdio.h>
 
 HHOOK keyboardHook; // Global hook handle
-int offset = 35;    // Cursor movement offset
+int offset = 25;    // Cursor movement offset
 
 // Function to move the cursor in a specific direction
 void moveCursor(int dx, int dy) {
