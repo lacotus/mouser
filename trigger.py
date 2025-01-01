@@ -3,7 +3,7 @@ import subprocess
 
 def run_program():
     # Replace 'path/to/your/program.exe' with the path to your compiled C program
-    program_path = r".\mouser.exe"
+    program_path = r"C:\Users\lspie\Software\C\mouser\mouser.exe"
     try:
         subprocess.Popen(program_path, shell=True)
     except Exception as e:
