@@ -1,0 +1,19 @@
+==========
+== TODO ==
+==========
+
+1. Figure out issue related to loss of focus when program is exited
+
+2. Test running for extended periods
+
+3. Write tests
+
+===============
+== COMPLETED ==
+===============
+
+
+===========
+== NOTES ==
+===========
+
