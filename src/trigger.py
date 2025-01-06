@@ -9,10 +9,10 @@ def run_program():
     except Exception as e:
         print(f"Failed to run the program: {e}")
 
-# Register the hotkey: Alt+Shift+J
-keyboard.add_hotkey('alt+shift+j', run_program)
+# Register the hotkey: Alt+Ctrl+J
+keyboard.add_hotkey('a+w+d+j', run_program)
 
-print("Listening for Alt+Shift+J... Press Ctrl+C to exit.")
+print("Listening for Alt+Ctrl+J... Press Ctrl+C to exit.")
 try:
     keyboard.wait('esc')  # Wait indefinitely, or replace 'esc' with another exit condition
 except KeyboardInterrupt:
