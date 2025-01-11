@@ -10,7 +10,7 @@ def run_program():
         print(f"Failed to run the program: {e}")
 
 # Register the hotkey: Alt+Ctrl+J
-keyboard.add_hotkey('a+w+d+j', run_program)
+keyboard.add_hotkey('alt+shift+n', run_program)
 
 print("Listening for Alt+Ctrl+J... Press Ctrl+C to exit.")
 try:

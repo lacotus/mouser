@@ -48,63 +48,59 @@ void simulateClick(DWORD buttonDown, DWORD buttonUp) {
     SendInput(2, input, sizeof(INPUT));
 }
 
+// Function to block w, a, s, d, j, k, l and q keys
+bool ShouldBlockKey(DWORD vkCode)
+{
+	switch(vkCode) {
+		case 'W': case 'A': case 'S': case 'D': 
+		case 'J': case 'K': case 'L': case 'Q': 
+			return true;
+		default:
+			return false;
+	}
+}
+
 // Keyboard hook callback
 LRESULT CALLBACK KeyboardProc(int nCode, WPARAM wParam, LPARAM lParam) {
     if (nCode == HC_ACTION) {
         KBDLLHOOKSTRUCT* pKey = (KBDLLHOOKSTRUCT*)lParam;
         DWORD vkCode = pKey->vkCode;
 
-        // Only intercept normal A-Z, etc. (adjust as needed)
-        // You can also check pKey->flags for extended keys
-        switch (wParam) {
-            case WM_KEYDOWN:
-            {
-                // Only set true if it wasn't already pressed
-                if (!keysPressed[vkCode]) {
-                    keysPressed[vkCode] = true;
+        bool isKeyDown = (wParam == WM_KEYDOWN || wParam == WM_SYSKEYDOWN);
+        bool isKeyUp   = (wParam == WM_KEYUP   || wParam == WM_SYSKEYUP);
 
-                    switch (vkCode) {
-                        case 'J':
-                            // Press and hold left mouse down
-                            simulateClick(MOUSEEVENTF_LEFTDOWN, 0);
-                            break;
-                        case 'K':
-                            // Instant middle click
-                            simulateClick(MOUSEEVENTF_MIDDLEDOWN, MOUSEEVENTF_MIDDLEUP);
-                            break;
-                        case 'L':
-                            // Instant right click
-                            simulateClick(MOUSEEVENTF_RIGHTDOWN, MOUSEEVENTF_RIGHTUP);
-                            break;
-                        case 'Q': 
-                            // Quit
-                            runMovementThread = false;   // stop the movement thread
-                            PostQuitMessage(0);
-                            break;
-                        default:
-                            break;
-                    }
-                }
-                return 1; // Block the key from reaching other apps
-            }
-
-            case WM_KEYUP:
-            {
-                keysPressed[vkCode] = false;
-
+        // Instead of a lambda, call the function
+        if (ShouldBlockKey(vkCode)) {
+            if (isKeyDown && !keysPressed[vkCode]) {
+                keysPressed[vkCode] = true;
                 switch (vkCode) {
                     case 'J':
-                        // Release left mouse
-                        simulateClick(0, MOUSEEVENTF_LEFTUP);
+                        simulateClick(MOUSEEVENTF_LEFTDOWN, 0);
                         break;
-                    default:
+                    case 'K':
+                        simulateClick(MOUSEEVENTF_MIDDLEDOWN, MOUSEEVENTF_MIDDLEUP);
+                        break;
+                    case 'L':
+                        simulateClick(MOUSEEVENTF_RIGHTDOWN, MOUSEEVENTF_RIGHTUP);
+                        break;
+                    case 'Q':
+                        runMovementThread = false;
+                        PostQuitMessage(0);
                         break;
                 }
-                return 1; // Block the key
+                return 1; // block the key
+            } 
+            else if (isKeyUp) {
+                keysPressed[vkCode] = false;
+                if (vkCode == 'J') {
+                    simulateClick(0, MOUSEEVENTF_LEFTUP);
+                }
+                return 1; // block the key
             }
         }
-    }
 
+        // If it's NOT one of our special keys, pass it on
+    }
     return CallNextHookEx(keyboardHook, nCode, wParam, lParam);
 }
 
